@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: prj
+spec:
+  ports:
+    - port: 3306
+      nodePort: 31113
+  selector:
+    app: mysql
+  type: NodePort
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: prj
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - image: mariadb:10.2
+          name: mysql
+          env:
+            # Use secret in real usage
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_USER
+              value: MYSQL_USER_XXX
+            - name: MYSQL_PASSWORD
+              value: MYSQL_PASSWORD_XXX
+            - name: TZ
+              value: Asia/Tokyo
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-persistent-storage-prj
+              mountPath: /var/lib/mysql
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mysql-persistent-storage-prj
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+        - name: initdb
+          hostPath:
+            path: /mnt/mysql_init2

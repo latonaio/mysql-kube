@@ -7,12 +7,13 @@ $ mkdir mysql_init
 $ cp 初期データ挿入用のSQLファイルパス mysql_init/
 ```
 
-[2] 以下コマンドを実行してください（対話式のスクリプトが起動します）
+[2] 以下コマンドを実行してください
 
 ```
-$ make install
-MYSQL_USER: 「MySQLユーザ名」を入力
-MYSQL_PASSWORD: 「MySQLパスワード」を入力
+$ make install-default PV_SIZE=1Gi USER_NAME=${MYSQL_USER} USER_PASSWORD=${MYSQL_PASSWORD}
+PV_SIZE 任意のストレージサイズ
+MYSQL_USER: 任意の「MySQLユーザ名」
+MYSQL_PASSWORD: 任意の「MySQLパスワード」
 ```
 
 [3] 以下コマンドでMySQLのPodが正常に起動している事を確認してください
