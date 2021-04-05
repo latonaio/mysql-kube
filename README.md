@@ -3,12 +3,8 @@ MariaDB(MySQL)を立ち上げるのためのマイクロサービスです。
 立ち上げに必要なマニフェストファイルが入っています。
 
 # 動作環境
-mysql-kubeは、aion-core上での動作を前提としており、下記動作環境が必要となります。   
--　ARM CPU搭載のデバイス(NVIDIA Jetson シリーズ等)  
--　OS: Linux Ubuntu OS  
--　CPU: ARM64  
--　Kubernetes   
--　AION のリソース  
+mysql-kubeは、kubernetes上での動作を前提としています。
+kubernetesの環境構築後に起動してください。
 
 # マニフェストファイルの仕様
 * ポート: 3306   
