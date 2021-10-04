@@ -1,19 +1,14 @@
-# mysql-kube
-## 概要
-mysql-kubeは、MariaDB(MySQL)を立ち上げるのためのマイクロサービスです。  
+# 概要
+MariaDB(MySQL)を立ち上げるのためのマイクロサービスです。  
 立ち上げに必要なマニフェストファイルが入っています。
 
-## 動作環境
-mysql-kubeは、kubernetes上での動作を前提としています。以下の環境が必要となります。
-* ARM CPU搭載のデバイス(NVIDIA Jetson シリーズ等)   
-* OS: Linux Ubuntu OS   
-* CPU: ARM64   
-* Kubernetes   
-* MySQL   
-   
-## マニフェストファイルの仕様
+# 動作環境
+mysql-kubeは、kubernetes上での動作を前提としています。
+kubernetesの環境構築後に起動してください。
+
+# マニフェストファイルの仕様
 * ポート: 3306   
-* コンテナイメージ: mariadb:10.2   
+* コンテナイメージ: mariadb:10.6   
 * volumeのマウント場所 
 	* **persistentVolume**:
 		* コンテナ: /var/lib/mysql
@@ -23,7 +18,7 @@ mysql-kubeは、kubernetes上での動作を前提としています。以下の
 		* hostOS: /mnt/mysql_init
 * タイムゾーン: Asia/Tokyo   
 
-## セットアップ
+# how to setup
 [1] mysql_init内に初期データ挿入用のSQLファイルを配置してください
 
 ```

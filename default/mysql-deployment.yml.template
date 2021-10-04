@@ -28,7 +28,7 @@ spec:
         app: mysql
     spec:
       containers:
-        - image: mariadb:10.2
+        - image: mariadb:10.6
           name: mysql
           env:
             # Use secret in real usage
