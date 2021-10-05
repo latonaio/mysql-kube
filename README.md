@@ -1,5 +1,5 @@
 # 概要
-MariaDB(MySQL)を立ち上げるのためのマイクロサービスです。  
+MariaDB(MySQL)を立ち上げるためのマイクロサービスです。  
 立ち上げに必要なマニフェストファイルが入っています。
 
 # 動作環境
@@ -50,7 +50,7 @@ RDBMSにはSQLite、SQL ServerやPostgreSQLなどがあります。
 * SQLite: 軽量で手頃だが、大規模なシステムでは機能不十分  
 * PostgreSQL: 高性能だが、処理コストが高い  
 
-MariaDB(MySQL)はSQL ServerやPostgreSQLの中間に位置し、高速で実用性が高いため、エッジ環境で採用しています。   
+MariaDB(MySQL)はSQL ServerやPostgreSQLの中間に位置し、高速で実用性が高いため、LatonaおよびAIONではエッジ環境で採用されています。   
 
 以下、MariaDBの特徴です。   
 
@@ -69,7 +69,6 @@ MariaDBはMySQLから派生したもので、MySQLと高い互換性がありま
 |堅牢性|高い|普通|   
 |クラスター構成|対応|非対応|   
 
-MariaDBは、無償で利用可能で、パフォーマンス性が高いため、MariaDBを採用しています。
 
 ## リレーショナル・データベース
 MariaDB(MySQL)は、リレーショナルデータベースです。
