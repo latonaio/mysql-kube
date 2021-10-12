@@ -1,13 +1,40 @@
 # 概要
-Kubernetes上でMariaDB(MySQL)を立ち上げるためのマイクロサービスです。  
-立ち上げに必要なマニフェストファイルが入っています。   
-AIONでは、MySQLは主に、エッジアプリケーションで発生した静的なデータを保持・維持するために用いられます。
+Kubernetes上でMariaDB(MySQL)のPodを立ち上げるためのマイクロサービスです。    
+本リポジトリには、立ち上げに必要なマニフェストファイルが入っています。  
+また、本リポジトリには、MySQLの初期設定と、Pod立ち上げ後のテーブルの作成に関する手順が含まれています。  
+AIONでは、MySQLは主に、エッジアプリケーションで発生した静的なデータを保持・維持するために用いられます。  
 
 # 動作環境
-mysql-kubeは、kubernetes上での動作を前提としています。
-kubernetesの環境構築後に起動してください。
+mysql-kubeは、Kubernetes上での動作を前提としています。
+Kubernetesの環境構築後に起動してください。
 
-# マニフェストファイルの仕様
+# MySQLのInitial Setup  
+以下の手順でMySQLのPodを立ち上げます。  
+
+[1] mysql_init内に初期データ挿入用のSQLファイルを配置してください  
+
+```
+$ mkdir mysql_init
+$ cp 初期データ挿入用のSQLファイルパス mysql_init/
+```
+
+[2] 以下コマンドを実行してください  
+
+```
+$ make install-default PV_SIZE=1Gi USER_NAME=${MYSQL_USER} USER_PASSWORD=${MYSQL_PASSWORD}
+PV_SIZE 任意のストレージサイズ
+MYSQL_USER: 任意の「MySQLユーザ名」
+MYSQL_PASSWORD: 任意の「MySQLパスワード」
+```
+
+[3] 以下コマンドでMySQLのPodが正常に起動している事を確認してください  
+
+```
+$ kubectl get po | grep mysql
+```
+# MySQL のための Kubernetesの設定
+MySQLのInitial Setupにより、以下の通りにマニフェストファイルが作成されます。
+
 * ポート: 3306   
 * コンテナイメージ: mariadb:10.6   
 * volumeのマウント場所 
@@ -19,29 +46,23 @@ kubernetesの環境構築後に起動してください。
 		* hostOS: /mnt/mysql_init
 * タイムゾーン: Asia/Tokyo   
 
-# how to setup
-[1] mysql_init内に初期データ挿入用のSQLファイルを配置してください
+# MySQLにおける アプリケーションのコアテーブル の作成
+MySQLデータベースに、アプリケーションのコアテーブルを作成します。  
+例えば、OMOTE-Bakoアプリケーションのコアテーブル（＝主に ui-backend-for-omotebako の稼働に必要なコアテーブル）を作成する場合、以下のコマンドになります。  
+```
+$ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> --default-character-set=utf8 -D Omotebako" < ./sql/ui-backend-for-omotebako.sql
+```
+`<mysql-pods>`、`<username>`および`<password>`はセットアップ環境に合わせて変えること  
+
+# MySQLにおける アプリケーションの追加テーブル の作成    
+MySQLデータベースに、アプリケーションの追加テーブルを作成します。  
+例えば、calendar-module-kube の稼働に必要なカレンダーテーブルを追加する場合、以下のコマンドになります。
 
 ```
-$ mkdir mysql_init
-$ cp 初期データ挿入用のSQLファイルパス mysql_init/
+$ cd /path/to/calendar-module-kube-sql
+$ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> --default-character-set=utf8" < ./calendar-module-kube-sql.sql
 ```
-
-[2] 以下コマンドを実行してください
-
-```
-$ make install-default PV_SIZE=1Gi USER_NAME=${MYSQL_USER} USER_PASSWORD=${MYSQL_PASSWORD}
-PV_SIZE 任意のストレージサイズ
-MYSQL_USER: 任意の「MySQLユーザ名」
-MYSQL_PASSWORD: 任意の「MySQLパスワード」
-```
-
-[3] 以下コマンドでMySQLのPodが正常に起動している事を確認してください
-
-```
-$ kubectl get po | grep mysql
-```
-
+`<mysql-pods>`、`<username>`および`<password>`はセットアップ環境に合わせて変えること
 
 
 # MariaDBについて
