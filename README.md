@@ -8,7 +8,7 @@ AIONでは、MySQLは主に、エッジアプリケーションで発生した�
 mysql-kubeは、Kubernetes上での動作を前提としています。
 Kubernetesの環境構築後に起動してください。
 
-## mongodb-kubeを用いたエッジコンピューティングアーキテクチャ(OMOTE-Bakoアプリケーションの例)  
+## mysql-kubeを用いたエッジコンピューティングアーキテクチャ(OMOTE-Bakoアプリケーションの例)  
 mysql-kubeは、下記の黄色い枠の部分のリソースです。  
 ![mysql_omotebako](docs/omotebako_architecture.drowio.png)  
 
