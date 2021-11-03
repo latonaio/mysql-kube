@@ -1,5 +1,5 @@
-# 概要
-Kubernetes上でMariaDB(MySQL)のPodを立ち上げるためのマイクロサービスです。    
+# mysql-kube
+mysql-kubeは、Kubernetes上でMariaDB(MySQL)のPodを立ち上げるためのマイクロサービスです。    
 本リポジトリには、立ち上げに必要なマニフェストファイルが入っています。  
 また、本リポジトリには、MySQLの初期設定と、Pod立ち上げ後のテーブルの作成に関する手順が含まれています。  
 AIONでは、MySQLは主に、エッジアプリケーションで発生した静的なデータを保持・維持するために用いられます。  
@@ -7,6 +7,10 @@ AIONでは、MySQLは主に、エッジアプリケーションで発生した�
 # 動作環境
 mysql-kubeは、Kubernetes上での動作を前提としています。
 Kubernetesの環境構築後に起動してください。
+
+## mongodb-kubeを用いたエッジコンピューティングアーキテクチャ(OMOTE-Bakoアプリケーションの例)  
+mysql-kubeは、下記の黄色い枠の部分のリソースです。  
+![mysql_omotebako](docs/omotebako_architecture.drowio.png)  
 
 # MySQLのInitial Setup  
 以下の手順でMySQLのPodを立ち上げます。  
