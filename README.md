@@ -1,18 +1,22 @@
 # mysql-kube
-mysql-kubeは、Kubernetes上でMariaDB(MySQL)のPodを立ち上げるためのマイクロサービスです。    
-本リポジトリには、立ち上げに必要なマニフェストファイルが入っています。  
+mysql-kube は、Kubernetes 上で MariaDB(MySQL) の Pod を立ち上げ稼働させるための マイクロサービス です。    
+本リポジトリには、必要なマニフェストファイルが入っています。  
 また、本リポジトリには、MySQLの初期設定と、Pod立ち上げ後のテーブルの作成に関する手順が含まれています。  
 AIONでは、MySQLは主に、エッジアプリケーションで発生した静的なデータを保持・維持するために用いられます。  
 
 # 動作環境
-mysql-kubeは、Kubernetes上での動作を前提としています。
-Kubernetesの環境構築後に起動してください。
 
-## mysql-kubeを用いたエッジコンピューティングアーキテクチャ(OMOTE-Bakoアプリケーションの例)  
-mysql-kubeは、下記の黄色い枠の部分のリソースです。  
+* OS: Linux OS  
+
+* CPU: ARM/AMD/Intel  
+
+* Kubernetes  
+
+## mysql-kube を用いたエッジコンピューティングアーキテクチャ(OMOTE-Bakoアプリケーションの例)  
+mysql-kube は、下記の黄色い枠の部分のリソースです。  
 ![mysql_omotebako](docs/omotebako_architecture.drowio.png)  
 
-# MySQLのInitial Setup  
+# MySQL の Initial Setup  
 以下の手順でMySQLのPodを立ち上げます。  
 
 [1] mysql_init内に初期データ挿入用のSQLファイルを配置してください  
@@ -36,8 +40,8 @@ MYSQL_PASSWORD: 任意の「MySQLパスワード」
 ```
 $ kubectl get po | grep mysql
 ```
-# MySQL のための Kubernetesの設定
-MySQLのInitial Setupにより、以下の通りにマニフェストファイルが作成されます。
+# MySQL 立上げ・稼働 のための Kubernetes マニフェストファイル の設定
+MySQL の Initial Setup により、以下の通りにマニフェストファイルが作成されます。
 
 * ポート: 3306   
 * コンテナイメージ: mariadb:10.6   
@@ -50,7 +54,7 @@ MySQLのInitial Setupにより、以下の通りにマニフェストファイ�
 		* hostOS: /mnt/mysql_init
 * タイムゾーン: Asia/Tokyo   
 
-# MySQLにおける アプリケーションのコアテーブル の作成
+# MySQL における アプリケーション の コアテーブル の作成
 MySQLデータベースに、アプリケーションのコアテーブルを作成します。  
 例えば、OMOTE-Bakoアプリケーションのコアテーブル（＝主に ui-backend-for-omotebako の稼働に必要なコアテーブル）を作成する場合、以下のコマンドになります。  
 ```
@@ -58,7 +62,7 @@ $ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> -
 ```
 `<mysql-pods>`、`<username>`および`<password>`はセットアップ環境に合わせて変えること  
 
-# MySQLにおける アプリケーションの追加テーブル の作成    
+# MySQL における アプリケーション の 追加テーブル の作成    
 MySQLデータベースに、アプリケーションの追加テーブルを作成します。  
 例えば、calendar-module-kube の稼働に必要なカレンダーテーブルを追加する場合、以下のコマンドになります。
 
@@ -69,7 +73,7 @@ $ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> -
 `<mysql-pods>`、`<username>`および`<password>`はセットアップ環境に合わせて変えること
 
 
-# MariaDBについて
+# MariaDB について
 エッジ環境はスペックの制限があるため、機能性とパフォーマンスのバランスに優れているMariaDB(MySQL)を採用しています。   
 RDBMSにはSQLite、SQL ServerやPostgreSQLなどがあります。 
 
@@ -80,7 +84,7 @@ MariaDB(MySQL)はSQL ServerやPostgreSQLの中間に位置し、高速で実用�
 
 以下、MariaDBの特徴です。   
 
-## MariaDBとは
+## MariaDB とは
 MariaDBはMySQLから派生したもので、MySQLと高い互換性があります。   
 
 《MySQLとMariaDBの違い》
