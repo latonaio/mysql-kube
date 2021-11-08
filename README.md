@@ -12,7 +12,6 @@ AIONでは、MySQLは主に、エッジアプリケーションで発生した�
 
 * Kubernetes  
 
-* AION
 
 ## mysql-kube を用いたエッジコンピューティングアーキテクチャ(OMOTE-Bakoアプリケーションの例)  
 mysql-kube は、下記の黄色い枠の部分のリソースです。  
