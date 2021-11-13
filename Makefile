@@ -8,8 +8,8 @@ PV_SIZE=1Gi
 DEPLOYMENT_YML=mysql-deployment.yml
 PV_YML=mysql-pv.yml
 
-.PHONY: make-install-default
-make-install-default:
+.PHONY: install-default
+install-default:
 	-sudo rm -rf $(INIT_DIR)
 	-sudo rm -rf $(DATA_DIR)
 	-sudo rm -rf $(DEPLOYMENT_YML)

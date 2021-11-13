@@ -17,10 +17,11 @@ AIONでは、MySQLは主に、エッジアプリケーションで発生した�
 mysql-kube は、下記の黄色い枠の部分のリソースです。  
 ![mysql_omotebako](docs/omotebako_architecture.drowio.png)  
 
-# Kubernetes 上での MySQL の Initial Setup  
-以下の手順でMySQLのPodを立ち上げます。  
+# Kubernetes 上での MySQL の Pod 立ち上げ  
+以下の手順でKubernetes上にMySQLのPodを立ち上げます。  
 
 [1] 以下コマンドを実行してください  
+※ make install-default は、本レポジトリの Makefile 内にて定義されている独自の コマンドです。  
 
 ```
 $ make install-default PV_SIZE=1Gi USER_NAME=${MYSQL_USER} USER_PASSWORD=${MYSQL_PASSWORD}
@@ -35,7 +36,7 @@ MYSQL_PASSWORD: 任意の「MySQLパスワード」
 $ kubectl get po | grep mysql
 ```
 
-（※オプション）mysql_init内に初期データ挿入用のSQLファイルを配置してください  
+（※オプション）初期データを投入したい場合、[1] の事前に mysql_init内に初期データ挿入用のSQLファイルを配置してください  
 
 ```
 $ mkdir mysql_init
@@ -44,7 +45,7 @@ $ cp 初期データ挿入用のSQLファイルパス mysql_init/
 
 
 # MySQL 立上げ・稼働 のための Kubernetes マニフェストファイル の設定
-MySQL の Initial Setup により、以下の通りにマニフェストファイルが作成されます。
+上記 MySQL の Pod 立ち上げ により、以下の通りにマニフェストファイルが作成されます。
 
 * ポート: 3306   
 * コンテナイメージ: mariadb:10.6   
@@ -57,14 +58,14 @@ MySQL の Initial Setup により、以下の通りにマニフェストファ�
 		* hostOS: /mnt/mysql_init
 * タイムゾーン: Asia/Tokyo   
 
-# Kubernetes 上での MySQLデータベース の 立ち上げ
-Kubernetes 上で MySQLデータベースを立ち上げます。（下記の例では、データベースだけでなく、アプリケーションのコアテーブルを含む形でデータベースを立ち上げています）  
+# Kubernetes Pod 上での MySQLデータベース の 立ち上げ
+Kubernetes Pod 上で MySQLデータベースを立ち上げます。（下記の例では、データベースだけでなく、アプリケーションのコアテーブルを含む形でデータベースを立ち上げています）  
 ```
 $ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> --default-character-set=utf8" < ./sql/ui-backend-for-omotebako.sql
 ```
 `<mysql-pods>`、`<username>`および`<password>`はセットアップ環境に合わせて変えること  
 
-# MySQL における アプリケーション の テーブル の作成    
+# MySQLデータベース における アプリケーション の テーブル の作成    
 MySQLデータベースに、アプリケーションのテーブルを作成します。  
 
 ```
