@@ -17,17 +17,10 @@ AIONでは、MySQLは主に、エッジアプリケーションで発生した�
 mysql-kube は、下記の黄色い枠の部分のリソースです。  
 ![mysql_omotebako](docs/omotebako_architecture.drowio.png)  
 
-# MySQL の Initial Setup  
+# Kubernetes 上での MySQL の Initial Setup  
 以下の手順でMySQLのPodを立ち上げます。  
 
-[1] mysql_init内に初期データ挿入用のSQLファイルを配置してください  
-
-```
-$ mkdir mysql_init
-$ cp 初期データ挿入用のSQLファイルパス mysql_init/
-```
-
-[2] 以下コマンドを実行してください  
+[1] 以下コマンドを実行してください  
 
 ```
 $ make install-default PV_SIZE=1Gi USER_NAME=${MYSQL_USER} USER_PASSWORD=${MYSQL_PASSWORD}
@@ -36,11 +29,20 @@ MYSQL_USER: 任意の「MySQLユーザ名」
 MYSQL_PASSWORD: 任意の「MySQLパスワード」
 ```
 
-[3] 以下コマンドでMySQLのPodが正常に起動している事を確認してください  
+[2] 以下コマンドでMySQLのPodが正常に起動している事を確認してください  
 
 ```
 $ kubectl get po | grep mysql
 ```
+
+（※オプション）mysql_init内に初期データ挿入用のSQLファイルを配置してください  
+
+```
+$ mkdir mysql_init
+$ cp 初期データ挿入用のSQLファイルパス mysql_init/
+```
+
+
 # MySQL 立上げ・稼働 のための Kubernetes マニフェストファイル の設定
 MySQL の Initial Setup により、以下の通りにマニフェストファイルが作成されます。
 
@@ -55,21 +57,19 @@ MySQL の Initial Setup により、以下の通りにマニフェストファ�
 		* hostOS: /mnt/mysql_init
 * タイムゾーン: Asia/Tokyo   
 
-# Kubernetes 上での MySQL の 立ち上げ と MySQL における アプリケーション の コアテーブル の作成
-Kubernetes 上で MySQLデータベースを立ち上げ、アプリケーションのコアテーブルを作成します。  
-例えば、OMOTE-Bakoアプリケーションのコアテーブル（＝主に ui-backend-for-omotebako の稼働に必要なコアテーブル）を作成する場合、以下のコマンドになります。  
+# Kubernetes 上での MySQLデータベース の 立ち上げ
+Kubernetes 上で MySQLデータベースを立ち上げます。（下記の例では、データベースだけでなく、アプリケーションのコアテーブルを含む形でデータベースを立ち上げています）  
 ```
-$ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> --default-character-set=utf8 -D Omotebako" < ./sql/ui-backend-for-omotebako.sql
+$ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> --default-character-set=utf8" < ./sql/ui-backend-for-omotebako.sql
 ```
 `<mysql-pods>`、`<username>`および`<password>`はセットアップ環境に合わせて変えること  
 
-# MySQL における アプリケーション の 追加テーブル の作成    
-MySQLデータベースに、アプリケーションの追加テーブルを作成します。  
-例えば、calendar-module-kube の稼働に必要なカレンダーテーブルを追加する場合、以下のコマンドになります。
+# MySQL における アプリケーション の テーブル の作成    
+MySQLデータベースに、アプリケーションのテーブルを作成します。  
 
 ```
 $ cd /path/to/calendar-module-kube-sql
-$ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> --default-character-set=utf8" < ./calendar-module-kube-sql.sql
+$ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> --default-character-set=utf8 -D Omotebako" < ./calendar-module-kube-sql.sql
 ```
 `<mysql-pods>`、`<username>`および`<password>`はセットアップ環境に合わせて変えること
 
