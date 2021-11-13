@@ -55,8 +55,8 @@ MySQL の Initial Setup により、以下の通りにマニフェストファ�
 		* hostOS: /mnt/mysql_init
 * タイムゾーン: Asia/Tokyo   
 
-# MySQL における アプリケーション の コアテーブル の作成
-MySQLデータベースに、アプリケーションのコアテーブルを作成します。  
+# Kubernetes 上での MySQL の 立ち上げ と MySQL における アプリケーション の コアテーブル の作成
+Kubernetes 上で MySQLデータベースを立ち上げ、アプリケーションのコアテーブルを作成します。  
 例えば、OMOTE-Bakoアプリケーションのコアテーブル（＝主に ui-backend-for-omotebako の稼働に必要なコアテーブル）を作成する場合、以下のコマンドになります。  
 ```
 $ kubectl exec -i <mysql-pods> -- /bin/sh -c "mysql -u <username> -p<password> --default-character-set=utf8 -D Omotebako" < ./sql/ui-backend-for-omotebako.sql
