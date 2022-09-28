@@ -1,0 +1,8 @@
+- name: create mysql database for XxxxXxxxMySQLKube
+  shell: |
+    mysql -u{{ mysql.user }} -p{{ mysql.password }} -h 127.0.0.1 -P 30000 -e "CREATE DATABASE IF NOT EXISTS Authenticator default character set utf8 ;"
+
+- name: load xxxx-xxxx-mysql-kube/xxxx-xxxx-sql-xxxx-data.sql
+  shell: |
+    cd {{ work_dir }}/Runtime/xxxx-xxxx-mysql-kube
+    mysql -u{{ mysql.user }} -p{{ mysql.password }} -h 127.0.0.1 -P 30000 -D XxxxXxxxMySQLKube < xxxx-xxxx-sql-xxxx-data.sql

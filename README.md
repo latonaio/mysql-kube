@@ -137,3 +137,93 @@ MySQL Workbench は Windows、Linux、Mac OS X で利用可能です。
 * **データベース設計**：新規にER図が作成できるほか、既存のデータベースからER図を逆に生成することも可能です。   
 * **データベース開発**：SQLのクエリ作成や実行だけでなく、最適化を直感的な操作で行えるビジュアル表示に対応しています。さらにSQLエディタにはカラーハイライト表示や自動補完機能のほか、SQLの実行履歴表示やSQLステートメントの再利用、オブジェクトブラウザにも対応しており、SQLエディタとしてもとても優秀な開発ツールです。   
 * **データベース管理**：ヴィジュアルコンソールによってデータベースの可視性が高められており、MySQLの管理をより容易にする工夫が凝らされています。さらにビジュアル・パフォーマンス・ダッシュボードの実装により、パフォーマンス指標を一目で確認できます。   
+
+
+## SQL SELECT文の基本操作
+
+- データの全件取得
+
+```
+SELECT * 
+FROM [DATABASE_NAME].[TABLE_NAME];
+```
+
+- 特定の列のデータ取得
+
+```
+SELECT [row_name]
+FROM [DATABASE_NAME].[TABLE_NAME];
+```
+
+```
+SELECT [row_name1], [row_name2], ... [row_name100]
+FROM [DATABASE_NAME].[TABLE_NAME];
+```
+
+- 条件を指定してデータ取得
+
+```
+SELECT *
+FROM [DATABASE_NAME].[TABLE_NAME]
+WHERE [row_name]=[value];
+```
+
+```
+SELECT *
+FROM [DATABASE_NAME].[TABLE_NAME]
+WHERE [row_name1]=[value1]
+AND [row_name2]=[value2];
+```
+
+
+### 具体例
+- データベース名：Users
+- テーブル名：Address
+
+| id | name | address |
+| -- | -- | -- |
+| 1 | sato | tokyo |
+| 2 | tanaka | osaka |
+| 3 | yamada | aichi |
+
+- 全件取得
+
+```
+SELECT * FROM Users.Address;
+```
+
+| id | name | address |
+| -- | -- | -- |
+| 1 | sato | tokyo |
+| 2 | tanaka | osaka |
+| 3 | yamada | aichi |
+
+- 列指定
+
+```
+SELECT id, name FROM Users.Address;
+```
+
+| id | name |
+| -- | -- |
+| 1 | sato |
+| 2 | tanaka |
+| 3 | yamada |
+
+- 条件指定
+
+```
+SELECT * FROM Users.Address WHERE id=1;
+```
+
+| id | name | address |
+| -- | -- | -- |
+| 1 | sato | tokyo |
+
+```
+SELECT * FROM Users.Address WHERE id=2 AND name="tanaka";
+```
+
+| id | name | address |
+| -- | -- | -- |
+| 2 | tanaka | osaka |
