@@ -139,8 +139,70 @@ MySQL Workbench は Windows、Linux、Mac OS X で利用可能です。
 * **データベース管理**：ヴィジュアルコンソールによってデータベースの可視性が高められており、MySQLの管理をより容易にする工夫が凝らされています。さらにビジュアル・パフォーマンス・ダッシュボードの実装により、パフォーマンス指標を一目で確認できます。   
 
 
-## SQL SELECT文の基本操作
+## SQL 基本操作
+kubernetes内のmysqlを操作するにはpodに入る必要があります。
 
+### kubernetes　への入り方
+- 作成したkubernetesのpod名取得
+
+```
+kubectl get pod
+```
+
+- kubernetes環境に入る
+
+```
+kubectl exec -it [POD_NAME] bash
+```
+
+### mysql　への入り方
+```
+mysql -u[USER_NAME] -p[PASSWORD]
+```
+
+### sql dataの作成
+- Databaseの作成(同じ名前のDatabaseがなければ作成)
+
+```
+CREATE DATABASE IF NOT EXISTS [DATABASE_NAME] default character set utf8 ;
+```
+
+- Tableの作成
+
+```
+CREATE TABLE [DATABASE_NAME].[TABLE_NAME] (
+  [COLUMN_NAME] [DATA_TYPE] [OPTION]
+);
+```
+
+- recordの挿入
+
+```
+INSERT INTO `[DATABASE_NAME]` (`[COLUMN_NAME1]`, `[COLUMN_NAME2]`, `[COLUMN_NAME3]`)
+VALUES
+	('[VALUE1]','[VALUE2]','[VALUE3]');
+```
+
+### sql dataの削除
+- Databaseの削除
+
+```
+DROP DATABASE [DATABASE_NAME];
+```
+
+- Tableの削除
+
+```
+DROP TABLE [DATABASE_NAME].[TABLE_NAME];
+```
+
+- columnの条件に該当するrecordの削除
+
+```
+DELETE FROM [DATABASE_NAME].[TABLE_NAME] WHERE [COLUMN_NAME]="[VALUE]";
+```
+
+### sql dataの取得
 - データの全件取得
 
 ```
@@ -185,6 +247,63 @@ AND [row_name2]=[value2];
 | 1 | sato | tokyo |
 | 2 | tanaka | osaka |
 | 3 | yamada | aichi |
+
+#### sql dataの作成
+- Databaseの作成(同じ名前のDatabaseがなければ作成)
+
+```
+CREATE DATABASE IF NOT EXISTS Users default character set utf8
+```
+
+- Tableの作成
+
+```
+CREATE TABLE Users.Address (
+  id int AUTO_INCREMENT,
+  name varchar(20) NOT NULL DEFAULT '',
+  address varchar(70) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+);
+```
+
+- recordの挿入
+
+```
+INSERT INTO Address　VALUES　(NULL, 'kato', 'nagasaki');
+```
+
+| id | name | address |
+| -- | -- | -- |
+| 1 | sato | tokyo |
+| 2 | tanaka | osaka |
+| 3 | yamada | aichi |
+| 4 | kato | nagasaki |
+
+#### sql dataの削除
+- Databaseの削除
+
+```
+DROP DATABASE Users;
+```
+
+- Tableの削除
+
+```
+DROP TABLE Users.Address;
+```
+
+- columnの条件に該当するrecordの削除
+
+```
+DELETE FROM Users.Address WHERE name="tanaka";
+```
+
+| id | name | address |
+| -- | -- | -- |
+| 1 | sato | tokyo |
+| 3 | yamada | aichi |
+
+#### sql dataの取得
 
 - 全件取得
 
