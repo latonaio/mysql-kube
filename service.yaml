@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-kube # リポジトリによって変更
+spec:
+  ports:
+    - port: 3306
+      nodePort: 30011
+  selector:
+    app: mysql-kube
+  type: NodePort
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: mysql-kube # リポジトリによって変更
+spec:
+  selector:
+    matchLabels:
+      app: mysql-kube
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql-kube
+    spec:
+      nodeName: worker
+      hostname: mysql-common
+      containers:
+        - image: mariadb:11.3.2
+          name: mysql-kube
+          env:
+            # Use secret in real usage
+            - name: MYSQL_ROOT_PASSWORD
+              value: XXXXXXXX
+            - name: MYSQL_USER
+              value: XXXXXXXX
+            - name: MYSQL_PASSWORD
+              value: XXXXXXXX
+            - name: TZ
+              value: Asia/Tokyo
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-kube-pv-claim
+        - name: initdb
+          hostPath:
+            path: /mnt/mysql-kube-init
+---
+# MYSQL
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mysql-kube-pv-volume
+  labels:
+    type: local
+  namespace: default
+spec:
+  storageClassName: mysql-kube
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/mysql-kube" # /mnt/{リポジトリ名}を指定
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-kube-pv-claim
+  namespace: default
+spec:
+  storageClassName: mysql-kube
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
